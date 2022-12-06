@@ -5,6 +5,8 @@
 
 (in-package #:aoc-2022-day-4)
 
+;; FYI this is a very inefficient solution. not sure what was going through my head today
+
 (defun get-range (elf)
   "Go from a string of l-u to a list of ints from l to u"
   (destructuring-bind (lower upper)
@@ -12,6 +14,7 @@
     (iter (for section from (parse-integer lower) to (parse-integer upper))
       (collecting section))))
 
+;; it would be faster to just do math on the bounds. no need to actually build the ranges
 (defun fully-contained (pair)
   (destructuring-bind (elf-1 elf-2)
       (uiop:split-string pair :separator ",")
@@ -28,3 +31,20 @@
       (counting (fully-contained pair)))))
 
 (print (part1 "day-4-data.txt"))
+
+;; there's no need to create the entire ranges to check the intersection of two ranges, but this
+;; implementation barely required any modification from part1
+(defun partially-contained (pair)
+  (destructuring-bind (elf-1 elf-2)
+      (uiop:split-string pair :separator ",")
+    (let* ((range-1 (get-range elf-1))
+           (range-2 (get-range elf-2))
+           (overlap (intersection range-1 range-2)))
+      (> (length overlap) 0))))
+
+(defun part2 (filepath)
+  (let ((pairs (uiop:read-file-lines filepath)))
+    (iter (for pair in pairs)
+      (counting (partially-contained pair)))))
+
+(print (part2 "day-4-data.txt"))
