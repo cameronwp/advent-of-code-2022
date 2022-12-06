@@ -52,7 +52,7 @@
              (start-stack-id (parse-integer (first (subseq move-parts 3 4))))
              (goal-stack-id (parse-integer (first (subseq move-parts 5 6)))))
 
-        ;; follow the spirit of the procedure
+        ;; follow the spirit of the procedure. `pop' works really well
         (dotimes (_x num-crates-to-move)
           (let ((crate (pop (gethash start-stack-id state)))
                 (goal-stack (gethash goal-stack-id state)))

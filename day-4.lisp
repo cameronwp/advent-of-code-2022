@@ -5,7 +5,8 @@
 
 (in-package #:aoc-2022-day-4)
 
-;; FYI this is a very inefficient solution. not sure what was going through my head today
+;; FYI this is a very inefficient solution. doing math with bounds would have been way easier. not
+;; sure what was going through my head today. I think I was dead set on practicing `iter'?
 
 (defun get-range (elf)
   "Go from a string of l-u to a list of ints from l to u"
