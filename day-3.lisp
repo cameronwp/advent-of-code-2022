@@ -8,9 +8,9 @@
 (defun value-of (char)
   (let ((ascii (char-code char)))
     (if (>= ascii 97)
-        ;; must be lower case
+        ;; must be lower case. start at a=1
         (- ascii 96)
-        ;; must be upper case
+        ;; must be upper case. start at A=27
         (- ascii 38))))
 
 (defun string-to-char-list (str)
@@ -32,3 +32,17 @@
         (summing (get-value rucksack))))))
 
 (print (part1 "day-3-data.txt"))
+
+(defun part2 (filepath)
+  (let* ((raw-input (uiop:read-file-lines filepath))
+         (num-lines (length raw-input)))
+    (flet ((get-value (rucksacks)
+             (let* ((rucksacks-as-char-lists (map 'list 'string-to-char-list rucksacks))
+                    (shared (remove-duplicates (reduce 'intersection rucksacks-as-char-lists)))
+                    (shared-values (map 'list #'value-of shared)))
+               (apply '+ shared-values))))
+      (iter (for r from 0 to num-lines by 3)
+        (until (equal r 300))
+        (summing (get-value (subseq raw-input r (+ r 3))))))))
+
+(print (part2 "day-3-data.txt"))
